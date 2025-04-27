@@ -1,4 +1,31 @@
-<form action="{% url 'polls:vote' question.id %}" method="post">
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ question.question_text }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+
+    <h1>{{ question.question_text }}</h1>
+
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        {% for choice in question.choice_set.all %}
+            <div>
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+            </div>
+        {% endfor %}
+        <button type="submit">Vote</button>
+    </form>
+    
+</body>
+</html>
+
+
+<!-- <form action="{% url 'polls:vote' question.id %}" method="post">
     {% csrf_token %}
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>
@@ -9,4 +36,4 @@
         {% endfor %}
     </fieldset>
     <input type="submit" value="Vote">
-    </form>
+    </form> -->
